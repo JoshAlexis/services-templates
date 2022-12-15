@@ -1,13 +1,23 @@
 global:
-  scrape_interval: 15s # By default, scrape targets every 15 seconds
+  scrape_interval: 15s
+  scrape_timeout: 15s
+  evaluation_interval: 1m
 
 scrape_configs:
-  - job_name: 'prometheus'
-    scrape_interval: 5s
+  - job_name: prometheus
+    honor_timestamps: true
+    scrape_interval: 15s
+    scrape_timeout: 15s
+    follow_redirects: true
+    scheme: http
     static_configs:
       - targets: ['localhost:9090']
-  - job_name: 'node_exporter'
-    scrape_interval: 5s
+  - job_name: node_exporter
+    honor_timestamps: true
+    scrape_interval: 15s
+    scrape_timeout: 15s
+    follow_redirects: true
+    scheme: http
     static_configs:
       - targets: ['node_exporter:9100']
 

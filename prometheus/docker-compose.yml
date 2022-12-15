@@ -10,6 +10,7 @@ services:
     restart: unless-stopped
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--web.enable-lifecycle"
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik"
