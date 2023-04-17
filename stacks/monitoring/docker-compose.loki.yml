@@ -1,0 +1,30 @@
+version: '3'
+
+# We define loki as a container because there exists an error
+# when is deployed as a service. 
+# https://github.com/grafana/loki/issues/6648
+
+services:
+  loki:
+    image: grafana/loki:2.7.1
+    ports:
+      - "3100:3100"
+    command: "--config.file=/etc/loki/loki-config.yaml"
+    volumes:
+      - ./loki-config.yaml:/etc/loki/loki-config.yaml
+      - loki-data:/data/loki
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3100/ready || exit"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+    networks:
+      - monitoring
+
+volumes:
+  loki-data:
+
+networks:
+  monitoring:
+    external: true
